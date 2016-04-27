@@ -12,4 +12,12 @@ void BInsertSort(SqList &L);
 //表插入排序
 void SInertSort(SLinkList &L);
 
+//冒泡排序
+void BubbleSort(SqList &L);
+
+//快速排序
+void QuickSort(SqList &L, int head, int tail);
+
 #endif
+
+

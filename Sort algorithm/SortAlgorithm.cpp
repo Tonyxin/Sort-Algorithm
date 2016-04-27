@@ -90,3 +90,55 @@ void SInertSort(SLinkList &L)
 	}//for
 }
 
+//----------------------------------------冒泡排序-----------------------------------------
+void BubbleSort(SqList &L)
+{
+	/*总的时间复杂度是O(n^2)
+	*/
+	for (int i = 1; i < L.length; i++)				//要进行（L.length-1）轮冒泡
+	{
+		for (int j = 1; j <= L.length - i; j++)	//（L.length - i）以后的数据已经比较过了  不需要再比较
+		{
+			if (Compare(L.r[j].key, L.r[j + 1].key)>0)
+			{
+				RcdType tmp = L.r[j];				//将大的数向后挪
+				L.r[j] = L.r[j + 1];
+				L.r[j + 1] = tmp;
+			}//if
+		}//for
+	}//for
+}
+
+//----------------------------------------快速排序------------------------------------------
+void QuickSort(SqList &L, int head, int tail)
+{
+	/*基本思想：通过一趟排序将待排记录分割成独立的两个部分，其中一部分记录的关键字均比
+	**                另一部分记录的关键字小，则可分别对两部分记录继续排序，以达到整个序列有序
+	**L：要进行排序的序列；	head~tail划分出L中需要被排序的数据段
+	*/
+	int i = head;			//i与j分别为头尾指针
+	int j = tail;
+	RcdType bound = L.r[head];		//选取被排序列的第一个节点作为分界
+	while (i < j)			//当头指针与尾指针指向同一位置时，一次排列结束
+	{
+		while ((i<j) && (Compare(L.r[j].key, bound.key) > 0))
+			j--;
+		if (i < j)				//将大于分界的节点提到前半部分
+		{
+			L.r[i] = L.r[j];
+			i++;
+		}
+		while ((i < j) && (Compare(L.r[i].key, bound.key) < 0))
+			i++;
+		if (i < j)				//将小于分界的节点拿到后面
+		{
+			L.r[j] = L.r[i];
+			j--;
+		}	
+	}//while
+	L.r[i] = bound;		//i是排好序列后，边界节点应在的位置
+	if (abs(head - i)>1)		//如果剩下的两个序列中的节点数大于等于2，还要对两个节点进行迭代
+		QuickSort(L, head, i - 1);
+	if (abs(tail - i)>1)
+		QuickSort(L, i + 1, tail);
+}
