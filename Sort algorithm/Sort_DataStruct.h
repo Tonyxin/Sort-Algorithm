@@ -58,6 +58,9 @@ typedef struct LinkNode
 	LinkNode *next;			//指针域，指向链表的下一节点
 }LinkNode, *LinkList;
 
+//堆采用顺序表存储表示-------堆排序
+typedef SqList HeapType;
+
 //比较函数，左边大，返回1；一样大，返回0；右边大，返回-1
 int Compare(int, int);
 int Compare(float, float);

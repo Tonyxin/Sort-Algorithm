@@ -18,7 +18,7 @@ int main()
 	L.length = 20;
 	for (int i = 20; i > 0; i--)
 		L.r[21 - i].key = i;
-	QuickSort(L,1,20);
+	HeapSort(L);
 	for (int i = 1; i <= 20; i++)
 		cout << L.r[i].key << endl;
 	return 0;

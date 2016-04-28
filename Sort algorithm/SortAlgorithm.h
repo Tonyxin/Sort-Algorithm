@@ -18,6 +18,10 @@ void BubbleSort(SqList &L);
 //快速排序
 void QuickSort(SqList &L, int head, int tail);
 
+//堆排序
+void HeapSort(HeapType &H);			
+void HeapAdjust(HeapType &H, int s, int m);			//调整堆
+
 #endif
 
 

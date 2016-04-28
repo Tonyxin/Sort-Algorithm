@@ -142,3 +142,62 @@ void QuickSort(SqList &L, int head, int tail)
 	if (abs(tail - i)>1)
 		QuickSort(L, i + 1, tail);
 }
+
+//------------------------------------------堆排序------------------------------------------
+void HeapSort(HeapType &H)
+{
+	/*堆的定义：n个关键元素的序列{k1,k2,...,kn}，当且仅当k[i]<=k[2i]&&k[i]<=k[2i+1]
+	* 堆排序包含两个部分：
+	*		1、由一个无需序列建一个堆；
+	*		2、输出堆顶元素后，将剩余元素调整为一个堆
+	* 使用范围：适用于记录较多的情况
+	*排出的序列从小到大排列
+	*/		
+	for (int i = H.length / 2; i > 0; i--)			//初始建堆过程，调整为大顶堆
+		HeapAdjust(H, i, H.length);
+	for (int i = H.length; i > 1; i--)
+	{
+		RcdType tmp = H.r[1];
+		H.r[1] = H.r[i];
+		H.r[i] = tmp;
+		HeapAdjust(H, 1, i-1);
+	}
+}
+void HeapAdjust(HeapType &H, int s, int m)			//调整堆称为大顶堆
+{
+	/*H.r[s...m]中，只有H.r[s]不符合堆排序，H.r[s+1,...,m]均符合堆排序
+	*/
+	if (2 * s <= m)
+	{
+		//堆顶的节点关键字小于其孩子的关键字，将堆顶向下调整
+		if ((Compare(H.r[s].key, H.r[2 * s].key) < 0) || ((2 * s + 1 <= m) && (Compare(H.r[s].key, H.r[2 * s + 1].key) < 0)))		
+		{
+			//如果该节点存在右孩子，与左右孩子中关键字较大的节点交换
+			if (2 * s + 1 <= m)
+			{
+				if (Compare(H.r[2 * s].key, H.r[2 * s + 1].key) > 0)
+				{
+					RcdType tmp = H.r[2 * s];
+					H.r[2 * s] = H.r[s];
+					H.r[s] = tmp;
+					HeapAdjust(H, 2 * s, m);			//递归向下调整
+				}
+				else
+				{
+					RcdType tmp = H.r[2 * s + 1];
+					H.r[2 * s + 1] = H.r[s];
+					H.r[s] = tmp;
+					HeapAdjust(H, 2 * s + 1, m);		//递归向下调整
+				}//else
+			}
+			//如果没有右孩子，直接与左孩子交换
+			else
+			{
+				RcdType tmp = H.r[2 * s];
+				H.r[2 * s] = H.r[s];
+				H.r[s] = tmp;
+				HeapAdjust(H, 2 * s, m);			//递归向下调整
+			}
+		}//if
+	}//if
+}
