@@ -22,6 +22,11 @@ void QuickSort(SqList &L, int head, int tail);
 void HeapSort(HeapType &H);			
 void HeapAdjust(HeapType &H, int s, int m);			//调整堆
 
+//链式基数排序
+void RadixSort(SLList &L);				//基数排序
+void Distribute(SLList &L, Arrtype f, Arrtype e, int keyIndex);	//一趟分配
+void Collect(SLList &L, Arrtype f, Arrtype e, int keyIndex);		//一趟收集
+
 #endif
 
 

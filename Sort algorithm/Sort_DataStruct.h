@@ -61,6 +61,23 @@ typedef struct LinkNode
 //堆采用顺序表存储表示-------堆排序
 typedef SqList HeapType;
 
+//链式基数排序需要的数据结构
+#define MAX_NUM_OF_KEY 8		//每个记录最多可拥有的关键字
+#define RADIX 10							//关键字基数，此时是10进制整数的基数
+#define MAX_SPACE 10000			//静态链表的最大节点数
+typedef struct
+{
+	KeyType keys[MAX_NUM_OF_KEY];			//关键字项
+	int next;													//指向下一个节点
+}SLCell;				//节点的数据结构
+typedef struct
+{
+	SLCell r[MAX_SPACE];		//静态链表的可用空间
+	int keynum;						//每个节点的关键字个数
+	int recnum;						//静态链表存储的关键字个数
+}SLList;
+typedef int Arrtype[RADIX];	//定义指针数组类型
+
 //比较函数，左边大，返回1；一样大，返回0；右边大，返回-1
 int Compare(int, int);
 int Compare(float, float);

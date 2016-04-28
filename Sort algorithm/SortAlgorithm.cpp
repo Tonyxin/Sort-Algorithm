@@ -201,3 +201,61 @@ void HeapAdjust(HeapType &H, int s, int m)			//调整堆称为大顶堆
 		}//if
 	}//if
 }
+
+//-------------------------------------链式基数排序方法-------------------------------------
+void RadixSort(SLList &L)				//基数排序
+{
+	/*L是用静态链表表示的顺序表，L中每个节点含有多个关键字
+	* 通过多次的分类与收集，使得L称为关键字从小到大排列的有序表
+	* 注意：这里只是对指针进行了调整，并没有对节点的位置进行调整，只能进行顺序查找
+	*/
+	Arrtype f, e;		//关键字基数的指针数组[0~RADIX-1]
+	//初始静态循环链表的指针指向
+	for (int i = 0; i < L.recnum; i++)
+		L.r[i].next = i + 1;
+	L.r[L.recnum].next = 0;
+	for (int i = 0; i < L.keynum; i++)
+	{
+		Distribute(L, f, e, i);
+		Collect(L, f, e, i);
+	}
+}
+void Distribute(SLList &L, Arrtype f, Arrtype e, int keyIndex)		//一趟分配
+{
+	/*函数功能：对链表L中的各个节点，按照关键字[keyIndex]进行一趟分类
+	*/
+	for (int i = 0; i < RADIX; i++)		//基数数组初始化，均指向第一个节点
+	{
+		e[i] = 0;		f[i] = 0;
+	}
+	SLList Ltmp = L;
+	for (int i = Ltmp.r[0].next; i != 0; i = Ltmp.r[i].next)		//将链表上各个节点根据关键字进行分配
+	{
+		int key_tmp = Ltmp.r[i].keys[keyIndex];		//关键字
+		if (!f[key_tmp])				//该基数上还没有节点
+		{
+			f[key_tmp] = i;
+			e[key_tmp] = i;
+		}
+		else                              //该基数上已有节点
+		{
+			L.r[e[key_tmp]].next = i;
+			e[key_tmp] = i;
+		}//else
+	}//for
+}
+void Collect(SLList &L, Arrtype f, Arrtype e, int keyIndex)				//一趟收集
+{
+	/*函数功能：对f、e指的节点完成一趟收集，得到的L是按关键字[keyIndex]进行排序的有序序列
+	*/
+	int link = 0;			//用于非0字表之间进行连接
+	for (int i = 0; i < RADIX; i++)
+	{
+		if (f[i])
+		{
+			L.r[link].next = f[i];			//上一个非0子表的最后节点，连上这个字表的第一个节点
+			link = e[i];						//保存这个子表的最后一个节点号
+			L.r[e[i]].next = 0;			//为了形成闭合的链表结构，整个表最后一个节点还要连回0号单元
+		}//if
+	}//for
+}
